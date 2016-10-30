@@ -4,6 +4,10 @@ v1.0, 2016-10-30
 
 :icons: font
 
+image:https://badge.waffle.io/man-at-home/folderstats_exporter.svg?label=ready&title=Ready["Stories in Ready","http://waffle.io/man-at-home/folderstats_exporter"] 
+image:https://circleci.com/gh/man-at-home/folderstats_exporter/tree/master.svg?style=svg["CircleCI", link="https://circleci.com/gh/man-at-home/folderstats_exporter/tree/master"]
+
+
 A https://prometheus.io/[prometheus.io] exporter for directory contents. I'm not a Go developer so PRs are definitely welcome.
 
 == Metrics

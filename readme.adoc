@@ -1,4 +1,4 @@
-= dirstats exporter
+= folderstats exporter
 man-at-home
 v1.0, 2016-10-30
 
@@ -14,23 +14,23 @@ A https://prometheus.io/[prometheus.io] exporter for directory contents. I'm not
 
 The following metrics for a monitored directory path are currently exposed:
 
-* _dirstats_files_created_ 	monitored file creation events in path counter
-* _dirstats_files_modified_ monitored file modification events in path counter
-* _dirstats_files_deleted_  monitored file deletion (or moved out of path) events counter
-* _dirstats_files_in_path_ 	(up to a limit of 1024) current children in path gauge
+* _folderstats_files_created_ 	monitored file creation events in path counter
+* _folderstats_files_modified_ monitored file modification events in path counter
+* _folderstats_files_deleted_  monitored file deletion (or moved out of path) events counter
+* _folderstats_files_in_path_ 	(up to a limit of 1024) current children in path gauge
 
 == Install
 
 [source, bash]
 ----
-go get -u github.com/man-at-home/dirstats_exporter
+go get -u github.com/man-at-home/folderstats_exporter
 ----
 
 == Running
 
 [source, bash]
 ----
-/../dirstats -path-to-watch c:\EEK -web.listen-address :9109
+/../folderstats -path-to-watch c:\EEK -web.listen-address :9109
 ----
 
 |===

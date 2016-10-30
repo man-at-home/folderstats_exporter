@@ -3,14 +3,7 @@ package main
 // a prometheus.io exporter, collecting metrics about child elements in a file folder.
 // not production ready, first attempt of a solution needed to monitor a working directory at work (producer/consumer type scenario).
 //
-// missing peaces:
-// - multi folder monitoring (from config file)
-// - filetypes
-// - multi platform
-// - large folders
-// - error handling
-//
-// man-at-home 2016
+// https://github.com/man-at-home/folderstats_exporter man-at-home 2016
 
 import (
 	"flag"

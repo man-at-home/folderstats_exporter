@@ -44,5 +44,5 @@ go get -u github.com/man-at-home/folderstats_exporter
 
 [NOTE]
 ====
-at the moment only build and used on m$ win server 2012.
+at the moment only built and used on m$ win server 2012.
 ====

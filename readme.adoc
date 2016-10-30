@@ -6,7 +6,10 @@ v1.0, 2016-10-30
 
 image:https://badge.waffle.io/man-at-home/folderstats_exporter.svg?label=ready&title=Ready["Stories in Ready",link="http://waffle.io/man-at-home/folderstats_exporter"] 
 image:https://circleci.com/gh/man-at-home/folderstats_exporter/tree/master.svg?style=svg["CircleCI", link="https://circleci.com/gh/man-at-home/folderstats_exporter/tree/master"]
+linux:
 image:https://drone.io/github.com/man-at-home/folderstats_exporter/status.png["Build Status",link="https://drone.io/github.com/man-at-home/folderstats_exporter/latest"]
+windows:
+image:https://ci.appveyor.com/api/projects/status/65hxk8erdjl86gyg/branch/master?svg=true["Build status",link="https://ci.appveyor.com/project/man-at-home/folderstats-exporter/branch/master"]
 
 
 A https://prometheus.io/[prometheus.io] exporter for directory contents. I'm not a Go developer so PRs are definitely welcome.

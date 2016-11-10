@@ -213,9 +213,13 @@ func (e *Exporter) scrape(ch chan<- prometheus.Metric) {
 	for _, fw := range e.folderWatcher {
 		log.Println("reporting ", fw.filesCreated, fw.filesModified, fw.filesDeleted)
 
-		e.filesCreated.WithLabelValues(cleanName(fw.path)).Set(float64(fw.filesCreated))
-		e.filesModified.WithLabelValues(cleanName(fw.path)).Set(float64(fw.filesModified))
-		e.filesDeleted.WithLabelValues(cleanName(fw.path)).Set(float64(fw.filesDeleted))
+		// race conditions waiting here...
+		e.filesCreated.WithLabelValues(cleanName(fw.path)).Add(float64(fw.filesCreated))
+		fw.filesCreated = 0
+		e.filesModified.WithLabelValues(cleanName(fw.path)).Add(float64(fw.filesModified))
+		fw.filesModified = 0
+		e.filesDeleted.WithLabelValues(cleanName(fw.path)).Add(float64(fw.filesDeleted))
+		fw.filesDeleted = 0
 		e.filesInPath.WithLabelValues(cleanName(fw.path)).Set(float64(fw.CountFilesInPath()))
 	}
 

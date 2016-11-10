@@ -1,10 +1,13 @@
 = folderstats exporter
 man-at-home
-v1.0, 2016-10-30
+v1.1, 2016-11-10
 
 :icons: font
 
 image:https://badge.waffle.io/man-at-home/folderstats_exporter.svg?label=ready&title=Ready["Stories in Ready",link="http://waffle.io/man-at-home/folderstats_exporter"] 
+image:https://goreportcard.com/badge/github.com/man-at-home/folderstats_exporter["goreport",link="https://goreportcard.com/report/github.com/man-at-home/folderstats_exporter]
+
+
 image:https://circleci.com/gh/man-at-home/folderstats_exporter/tree/master.svg?style=svg["CircleCI", link="https://circleci.com/gh/man-at-home/folderstats_exporter/tree/master"]
 linux:
 image:https://drone.io/github.com/man-at-home/folderstats_exporter/status.png["Build Status",link="https://drone.io/github.com/man-at-home/folderstats_exporter/latest"]
@@ -18,10 +21,10 @@ A https://prometheus.io/[prometheus.io] exporter for directory contents. I'm not
 
 The following metrics for a monitored directory path are currently exposed:
 
-* _folderstats_files_created_ 	monitored file creation events in path counter
+* _folderstats_files_created_  monitored file creation events in path counter
 * _folderstats_files_modified_ monitored file modification events in path counter
 * _folderstats_files_deleted_  monitored file deletion (or moved out of path) events counter
-* _folderstats_files_in_path_ 	(up to a limit of 1024) current children in path gauge
+* _folderstats_files_in_path_  (up to a limit of 1024) current children in path gauge
 
 == Install
 

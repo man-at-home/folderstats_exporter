@@ -43,7 +43,8 @@ go get -u github.com/man-at-home/folderstats_exporter
 |===
 | argument                  | value 
 
-|-path-to-watch             | full (existing) directory path to watch for changes (defaults to "c:/temp", sorry)
+|-path-to-watch             | Full (existing) directory path to watch for changes (defaults to "c:/temp", sorry), multiple paths possible
+|-suffix                    | Restrict Counting to specific File Suffixes like *.pdf, (defaults to .*) |
 |-web.listen-address        | Address to listen on for web interface and telemetry. (defaults to ":9161")
 |-web.telemetry-path string | Path under which to expose metrics. (defaults to "/metrics")
 |===

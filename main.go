@@ -9,6 +9,8 @@ package main
 // - large folders
 // - error handling
 //
+// https://github.com/man-at-home/folderstats_exporter
+//
 // man-at-home 2016
 
 import (
@@ -32,6 +34,7 @@ const (
 // Watches exactly one folder/directory for file change events.
 type FolderWatcher struct {
 	path          string
+	suffix        string
 	filesCreated  uint32 // monitored file creation events in path counter
 	filesModified uint32 // monitored file modification events in path counter
 	filesDeleted  uint32 // monitored file deletion (or moved out of path) events counter
@@ -52,6 +55,7 @@ type Exporter struct {
 
 var (
 	pathToWatch   = flag.String("path-to-watch", "c:\\temp", "directory to watch for changes.")
+	suffix        = flag.String("suffix", ".*", "specific file suffix like .pdf or .* for all.")
 	listenAddress = flag.String("web.listen-address", ":9108", "Address to listen on for web interface on telemetry.")
 	metricPath    = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
 	landingPage   = []byte("<html><head><title>folderstats exporter</title></head><body><h1>folderstats exporter</h1><p><a href='" + *metricPath + "'>metrics can be found there!</a></p></body></html>")
@@ -82,16 +86,21 @@ func (fw *FolderWatcher) OnFileChangeEvent(watcher *fsnotify.Watcher) {
 	for {
 		select {
 		case ev := <-watcher.Event:
-			if ev.IsCreate() {
-				fw.filesCreated += 1
+
+			isWatchedSuffix := fw.suffix == ".*" || strings.HasSuffix(strings.ToLower(ev.Name), fw.suffix)
+
+			if isWatchedSuffix {
+				if ev.IsCreate() {
+					fw.filesCreated += 1
+				}
+				if ev.IsDelete() {
+					fw.filesDeleted += 1
+				}
+				if ev.IsModify() {
+					fw.filesModified += 1
+				}
 			}
-			if ev.IsDelete() {
-				fw.filesDeleted += 1
-			}
-			if ev.IsModify() {
-				fw.filesModified += 1
-			}
-			log.Println("event:", ev, fw.filesCreated, fw.filesModified, fw.filesDeleted)
+			log.Println("event:", ev, fw.filesCreated, fw.filesModified, fw.filesDeleted, "counted: "+ev.Name, isWatchedSuffix)
 
 		case err := <-watcher.Error:
 			log.Println("error:", err)
@@ -101,11 +110,12 @@ func (fw *FolderWatcher) OnFileChangeEvent(watcher *fsnotify.Watcher) {
 }
 
 // NewFolderWatcher ctor
-func NewFolderWatcher(path string) *FolderWatcher {
+func NewFolderWatcher(path string, suffix string) *FolderWatcher {
 	fw := new(FolderWatcher)
 	fw.path = path
+	fw.suffix = suffix
 
-	log.Println("will watch folder " + fw.path)
+	log.Println("will watch folder " + fw.path + " with files suffixes " + fw.suffix)
 
 	return fw
 }
@@ -241,23 +251,27 @@ func cleanName(s string) string {
 func main() {
 	flag.Parse()
 
-	watcher, err := fsnotify.NewWatcher()
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	// create a folderwatcher for each folder..
 	pathList := strings.Split(*pathToWatch, ";")
 
 	fws := make([]*FolderWatcher, len(pathList))
 
 	for index, path := range pathList {
-		fws[index] = NewFolderWatcher(path)
+		fws[index] = NewFolderWatcher(path, strings.ToLower(*suffix))
 	}
 
+	// create the metrics exporter
 	exporter := NewExporter(fws)
 
+	// start folder monitoring for each directory watcher
 	for _, fw := range fws {
+		watcher, err := fsnotify.NewWatcher()
+		if err != nil {
+			log.Fatal(err)
+		}
+
 		go fw.OnFileChangeEvent(watcher)
+
 		// start monitoring directory
 		err = watcher.Watch(fw.path)
 		if err != nil {
@@ -277,5 +291,4 @@ func main() {
 
 	// done with
 	log.Println("exporter for file system ends now.")
-	watcher.Close()
 }

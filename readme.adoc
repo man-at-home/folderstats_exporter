@@ -15,7 +15,10 @@ windows:
 image:https://ci.appveyor.com/api/projects/status/65hxk8erdjl86gyg/branch/master?svg=true["Build status",link="https://ci.appveyor.com/project/man-at-home/folderstats-exporter/branch/master"]
 
 
-A https://prometheus.io/[prometheus.io] exporter for directory contents. I'm not a Go developer so PRs are definitely welcome.
+A https://prometheus.io/[prometheus.io] exporter for directory contents.
+
+NOTE: this prometheus exporter is not in use anymore.
+
 
 == Metrics
 
